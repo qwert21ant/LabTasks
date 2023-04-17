@@ -1,0 +1,19 @@
+{
+  "students": [
+    {
+      "name": "D",
+      "age": 19,
+      "male": false,
+      "course": 2,
+      "grade": 7.53
+    },
+    {
+      "name": "F",
+      "age": 20,
+      "male": true,
+      "course": 2,
+      "grade": 6.76
+    }
+  ],
+  "avg": 5.395
+}

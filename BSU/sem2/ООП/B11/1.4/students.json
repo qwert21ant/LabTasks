@@ -1,0 +1,47 @@
+{
+	"n": 2,
+	"students": [
+		{
+			"name": "A",
+			"age": 23,
+			"male": true,
+			"course": 1,
+			"grade": 9.4
+		},
+		{
+			"name": "B",
+			"age": 21,
+			"male": false,
+			"course": 2,
+			"grade": 2.89
+		},
+		{
+			"name": "C",
+			"age": 18,
+			"male": true,
+			"course": 1,
+			"grade": 8.5
+		},
+		{
+			"name": "D",
+			"age": 19,
+			"male": false,
+			"course": 2,
+			"grade": 7.53
+		},
+		{
+			"name": "E",
+			"age": 25,
+			"male": true,
+			"course": 2,
+			"grade": 4.4
+		},
+		{
+			"name": "F",
+			"age": 20,
+			"male": true,
+			"course": 2,
+			"grade": 6.76
+		}
+	]
+}
