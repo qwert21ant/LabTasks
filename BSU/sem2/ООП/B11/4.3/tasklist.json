@@ -1,0 +1,20 @@
+{
+  "tasklist": [
+    {
+      "type": "MonsterKillCount",
+      "cost": 471,
+      "description": "Description J",
+      "monster_id": 92,
+      "location_id": 24391,
+      "amount": 5
+    },
+    {
+      "type": "MonsterKillUnique",
+      "cost": 894,
+      "description": "Description C",
+      "monster_id": 140,
+      "location_id": 6273,
+      "title": "Title U"
+    }
+  ]
+}
