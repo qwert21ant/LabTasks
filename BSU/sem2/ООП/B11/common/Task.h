@@ -32,7 +32,7 @@ public:
 	virtual Json::JsonObject* ToJSON() const;
 	virtual void FromJSON(Json::JsonObject*);
 
-	virtual ~Task();
+	virtual ~Task() = default;
 
 	friend std::ostream& operator <<(std::ostream&, const Task&);
 
@@ -47,6 +47,9 @@ public:
 
 	TaskMonsterKill(const TaskMonsterKill&);
 	TaskMonsterKill& operator =(const TaskMonsterKill&);
+
+	TaskMonsterKill(TaskMonsterKill&&);
+	TaskMonsterKill& operator =(TaskMonsterKill&&);
 
 	void SetDescription(const char*);
 	const char* GetDescription() const;
@@ -75,6 +78,12 @@ public:
 	TaskMonsterKillCount();
 	TaskMonsterKillCount(int, const char*, MonsterID, LocationID, int);
 
+	TaskMonsterKillCount(const TaskMonsterKillCount&) = default;
+	TaskMonsterKillCount& operator =(const TaskMonsterKillCount&) = default;
+
+	TaskMonsterKillCount(TaskMonsterKillCount&&) = default;
+	TaskMonsterKillCount& operator =(TaskMonsterKillCount&&) = default;
+
 	void SetAmount(int);
 	int GetAmount() const;
 
@@ -83,7 +92,7 @@ public:
 	Json::JsonObject* ToJSON() const override;
 	void FromJSON(Json::JsonObject*) override;
 
-	~TaskMonsterKillCount() override;
+	~TaskMonsterKillCount() override = default;
 
 private:
 	int amount;
@@ -96,6 +105,9 @@ public:
 
 	TaskMonsterKillUnique(const TaskMonsterKillUnique&);
 	TaskMonsterKillUnique& operator =(const TaskMonsterKillUnique&);
+
+	TaskMonsterKillUnique(TaskMonsterKillUnique&&);
+	TaskMonsterKillUnique& operator =(TaskMonsterKillUnique&&);
 
 	void SetTitle(const char*);
 	const char* GetTitle() const;
@@ -130,7 +142,7 @@ public:
 	virtual Json::JsonObject* ToJSON() const override;
 	virtual void FromJSON(Json::JsonObject*) override;
 
-	~TaskTravel() override;
+	~TaskTravel() override = default;
 
 private:
 	LocationID begin_location_id;
@@ -151,7 +163,7 @@ public:
 	Json::JsonObject* ToJSON() const override;
 	void FromJSON(Json::JsonObject*) override;
 
-	~TaskDelivery() override;
+	~TaskDelivery() override = default;
 
 private:
 	ItemID item_id;
@@ -170,7 +182,7 @@ public:
 	Json::JsonObject* ToJSON() const override;
 	void FromJSON(Json::JsonObject*) override;
 
-	~TaskSecurity() override;
+	~TaskSecurity() override = default;
 
 private:
 	Timestamp duration;

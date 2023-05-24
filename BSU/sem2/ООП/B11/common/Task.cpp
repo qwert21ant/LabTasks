@@ -83,8 +83,6 @@ ostream& operator <<(ostream& out, const Task& task) {
 	return out;
 }
 
-Task::~Task() {}
-
 
 TaskMonsterKill::TaskMonsterKill() : description(nullptr), monster_id(1), location_id(1) {}
 TaskMonsterKill::TaskMonsterKill(int cost, const char* desc, MonsterID mon_id, LocationID loc_id)
@@ -108,6 +106,32 @@ TaskMonsterKill& TaskMonsterKill::operator =(const TaskMonsterKill& task) {
 	description = copy_str(task.description);
 	monster_id = task.monster_id;
 	location_id = task.location_id;
+
+	return *this;
+}
+
+TaskMonsterKill::TaskMonsterKill(TaskMonsterKill&& task) 
+	: Task(move(task)), description(copy_str(task.description)), monster_id(task.monster_id), location_id(task.location_id) {
+	task.description = nullptr;
+	task.monster_id = 0;
+	task.location_id = 0;
+}
+
+TaskMonsterKill& TaskMonsterKill::operator =(TaskMonsterKill&& task) {
+	if (this == &task)
+		return *this;
+
+	(Task&)(*this) = (Task&&)(task);
+
+	delete[] description;
+
+	description = copy_str(task.description);
+	monster_id = task.monster_id;
+	location_id = task.location_id;
+
+	task.description = nullptr;
+	task.monster_id = 0;
+	task.location_id = 0;
 
 	return *this;
 }
@@ -215,11 +239,10 @@ void TaskMonsterKillCount::FromJSON(JsonObject* json) {
 		amount = get_number(field);
 }
 
-TaskMonsterKillCount::~TaskMonsterKillCount() {}
-
 
 TaskMonsterKillUnique::TaskMonsterKillUnique() : title(nullptr) {}
-TaskMonsterKillUnique::TaskMonsterKillUnique(int cost, const char* desc, MonsterID mon_id, LocationID loc_id, const char* title) : TaskMonsterKillUnique() {
+TaskMonsterKillUnique::TaskMonsterKillUnique(int cost, const char* desc, MonsterID mon_id, LocationID loc_id, const char* title)
+	: TaskMonsterKill(cost, desc, mon_id, loc_id) {
 	SetTitle(title);
 }
 
@@ -235,6 +258,26 @@ TaskMonsterKillUnique& TaskMonsterKillUnique::operator =(const TaskMonsterKillUn
 	delete[] title;
 
 	title = copy_str(task.title);
+
+	return *this;
+}
+
+TaskMonsterKillUnique::TaskMonsterKillUnique(TaskMonsterKillUnique&& task) 
+	: TaskMonsterKill(move(task)) {
+	title = task.title;
+	task.title = nullptr;
+}
+
+TaskMonsterKillUnique& TaskMonsterKillUnique::operator =(TaskMonsterKillUnique&& task) {
+	if (this == &task)
+		return *this;
+
+	(TaskMonsterKill&)(*this) = (TaskMonsterKill&&)(task);
+
+	delete[] title;
+
+	title = copy_str(task.title);
+	task.title = nullptr;
 
 	return *this;
 }
@@ -346,8 +389,6 @@ void TaskTravel::FromJSON(JsonObject* json) {
 		deadline = str_to_ts(get_string(field));
 }
 
-TaskTravel::~TaskTravel() {}
-
 
 TaskDelivery::TaskDelivery() : item_id(1) {}
 TaskDelivery::TaskDelivery(int cost, LocationID beg_loc_id, LocationID end_loc_id, Timestamp deadline, ItemID item_id)
@@ -395,8 +436,6 @@ void TaskDelivery::FromJSON(JsonObject* json) {
 		item_id = get_number(field);
 }
 
-TaskDelivery::~TaskDelivery() {}
-
 
 TaskSecurity::TaskSecurity() : duration(0) {}
 TaskSecurity::TaskSecurity(int cost, LocationID beg_loc_id, LocationID end_loc_id, Timestamp deadline, Timestamp duration)
@@ -435,8 +474,6 @@ void TaskSecurity::FromJSON(JsonObject* json) {
 	if (is_string(field))
 		duration = str_to_ts(get_string(field));
 }
-
-TaskSecurity::~TaskSecurity() {}
 
 
 
