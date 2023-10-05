@@ -6,25 +6,41 @@
 
 using namespace std;
 
-struct ExMatrix {
-	ExMatrix(size_t n) : n(n), a(vector<vector<double>>(n, vector<double>(n))), b(vector<double>(n)) {}
+class Matrix {
+public:
+	Matrix();
+	Matrix(size_t, size_t);
 
-	ExMatrix(const ExMatrix& mat) : n(mat.n), a(mat.a), b(mat.b) {}
+	Matrix(const Matrix&);
 
-	friend ostream& operator <<(ostream& out, const ExMatrix& mat) {
-		for (size_t i = 0; i < mat.n; i++) {
-			for (size_t j = 0; j < mat.n; j++) {
-				out << setw(8) << setprecision(4) << mat.a[i][j] << " ";
-			}
+	Matrix& operator =(const Matrix&);
 
-			out << " | " << setw(8) << setprecision(4) << mat.b[i] << endl;
-		}
+	size_t getNRows() const;
+	size_t getNCols() const;
 
-		return out;
-	}
+	void resize(size_t, size_t);
 
-	size_t n;
+	double& get(size_t, size_t);
+	const double& get(size_t, size_t) const;
 
-	vector<vector<double>> a;
-	vector<double> b;
+	Matrix& add(const Matrix&);
+	Matrix& subtract(const Matrix&);
+	Matrix& multiply(const Matrix&);
+
+	double norm() const;
+
+	friend Matrix operator +(Matrix, const Matrix&);
+	friend Matrix operator -(Matrix, const Matrix&);
+	friend Matrix operator *(Matrix, const Matrix&);
+
+	friend ostream& operator <<(ostream&, const Matrix&);
+
+private:
+	size_t n, m;
+
+	vector<vector<double>> data;
+
+public:
+	class OutOfRange : exception {};
+	class IncorrectDimensions : exception {};
 };
