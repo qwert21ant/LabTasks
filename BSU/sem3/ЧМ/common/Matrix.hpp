@@ -32,6 +32,8 @@ public:
 	bool isSquare() const;
 	bool isSymmetric() const;
 
+	friend Matrix operator -(Matrix);
+
 	friend Matrix operator +(Matrix, const Matrix&);
 	friend Matrix operator -(Matrix, const Matrix&);
 	friend Matrix operator *(Matrix, const Matrix&);

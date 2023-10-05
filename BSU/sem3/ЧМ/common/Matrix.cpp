@@ -129,6 +129,16 @@ bool Matrix::isSymmetric() const {
 	return true;
 }
 
+Matrix operator -(Matrix mat) {
+	for (int i = 0; i < mat.getNRows(); i++) {
+		for (int j = 0; j < mat.getNCols(); j++) {
+			mat.get(i, j) = -mat.get(i, j);
+		}
+	}
+
+	return mat;
+}
+
 Matrix operator +(Matrix l, const Matrix& r) {
 	l.add(r);
 
