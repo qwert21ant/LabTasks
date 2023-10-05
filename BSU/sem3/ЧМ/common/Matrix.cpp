@@ -111,6 +111,24 @@ double Matrix::norm() const {
 	return res;
 }
 
+bool Matrix::isSquare() const {
+	return n == m;
+}
+
+bool Matrix::isSymmetric() const {
+	if (!isSquare()) return false;
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < i; j++) {
+			if (data[i][j] != data[j][i]) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
 Matrix operator +(Matrix l, const Matrix& r) {
 	l.add(r);
 

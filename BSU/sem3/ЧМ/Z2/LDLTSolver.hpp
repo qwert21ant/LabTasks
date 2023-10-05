@@ -2,8 +2,9 @@
 
 #include "../common/ExMatrix.hpp"
 
-namespace GaussSolver {
+namespace LDLTSolver {
 	Matrix solve(ExMatrix);
 
+	class IncorrectInput : exception {};
 	class NoSolution : exception {};
 };

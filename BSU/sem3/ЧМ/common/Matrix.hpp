@@ -29,6 +29,9 @@ public:
 
 	double norm() const;
 
+	bool isSquare() const;
+	bool isSymmetric() const;
+
 	friend Matrix operator +(Matrix, const Matrix&);
 	friend Matrix operator -(Matrix, const Matrix&);
 	friend Matrix operator *(Matrix, const Matrix&);
