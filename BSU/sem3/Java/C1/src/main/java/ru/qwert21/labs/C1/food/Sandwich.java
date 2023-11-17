@@ -1,6 +1,6 @@
-package ru.qwert21.labs.lab1C.food;
+package ru.qwert21.labs.C1.food;
 
-import ru.qwert21.labs.lab1C.Utils;
+import ru.qwert21.labs.C1.Utils;
 
 public class Sandwich extends Food {
   private String filling1;

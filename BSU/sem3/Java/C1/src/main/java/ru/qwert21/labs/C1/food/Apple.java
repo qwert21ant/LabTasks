@@ -1,6 +1,6 @@
-package ru.qwert21.labs.lab1C.food;
+package ru.qwert21.labs.C1.food;
 
-import ru.qwert21.labs.lab1C.Utils;
+import ru.qwert21.labs.C1.Utils;
 
 public class Apple extends Food {
   private String size;

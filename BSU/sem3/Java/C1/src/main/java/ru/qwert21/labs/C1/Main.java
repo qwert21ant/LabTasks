@@ -1,6 +1,6 @@
-package ru.qwert21.labs.lab1C;
+package ru.qwert21.labs.C1;
 
-import ru.qwert21.labs.lab1C.food.Food;
+import ru.qwert21.labs.C1.food.Food;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;

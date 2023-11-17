@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group = 'ru.qwert21.labs.lab1C'
+group = 'ru.qwert21.labs.C1'
 version = '1.0-SNAPSHOT'
 
 repositories {

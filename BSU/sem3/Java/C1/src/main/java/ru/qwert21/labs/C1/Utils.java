@@ -1,4 +1,4 @@
-package ru.qwert21.labs.lab1C;
+package ru.qwert21.labs.C1;
 
 public class Utils {
   static public boolean isEqual(Object a, Object b) {

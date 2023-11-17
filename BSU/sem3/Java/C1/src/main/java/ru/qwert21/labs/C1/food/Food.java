@@ -1,8 +1,8 @@
-package ru.qwert21.labs.lab1C.food;
+package ru.qwert21.labs.C1.food;
 
-import ru.qwert21.labs.lab1C.Consumable;
-import ru.qwert21.labs.lab1C.Nutritious;
-import ru.qwert21.labs.lab1C.Utils;
+import ru.qwert21.labs.C1.Consumable;
+import ru.qwert21.labs.C1.Nutritious;
+import ru.qwert21.labs.C1.Utils;
 
 abstract public class Food implements Consumable, Nutritious {
   private String name;

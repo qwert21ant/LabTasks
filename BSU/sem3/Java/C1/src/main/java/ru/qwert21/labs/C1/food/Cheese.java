@@ -1,6 +1,4 @@
-package ru.qwert21.labs.lab1C.food;
-
-import ru.qwert21.labs.lab1C.Utils;
+package ru.qwert21.labs.C1.food;
 
 public class Cheese extends Food {
   public Cheese() {
