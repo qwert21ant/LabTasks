@@ -135,8 +135,6 @@ public class MyTableModel extends AbstractTableModel {
 		for (int i = 0; i < getRowCount(); i++) {
 			out.writeDouble((Double) getValueAt(i, 0));
 			out.writeDouble((Double) getValueAt(i, 1));
-			out.writeDouble((Double) getValueAt(i, 2));
-			out.writeDouble((Double) getValueAt(i, 3));
 		}
 	}
 }
