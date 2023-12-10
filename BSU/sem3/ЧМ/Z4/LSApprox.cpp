@@ -29,7 +29,7 @@ ExMatrix createMatrix(const vector<double>& x, const vector<double>& y, unsigned
 
 	for (int i = 0; i <= m; ++i) {
 		for (int j = 0; j <= m; ++j) {
-			res.getA(i, j) = i + j == 0 ? 1 : a[i + j - 1];
+			res.getA(i, j) = i + j == 0 ? n : a[i + j - 1];
 		}
 
 		res.getB(i) = b[i];
