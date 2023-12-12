@@ -11,9 +11,9 @@ public:
 	static double eps2;
 	static double kM;
 
-	static Matrix solveWithJ(const FuncSystemType&, const DoubleData&, const FuncMatrixType&);
+	static DoubleData solveWithJ(const FuncSystemType&, const DoubleData&, const FuncMatrixType&);
 
-	static Matrix solve(const FuncSystemType&, const DoubleData&);
+	static DoubleData solve(const FuncSystemType&, const DoubleData&);
 
 
 	class IterationsLimitExcedeed : exception {};

@@ -30,10 +30,11 @@ int main() {
 
 	cout << "Solve with J: " << endl;
 	try {
-		Matrix X = NewtonSolver::solveWithJ(system, X0, J);
+		DoubleData X = NewtonSolver::solveWithJ(system, X0, J);
 
 		cout << "Solution: " << endl;
-		cout << X << endl;
+		for (auto x : X) cout << x << " ";
+		cout << endl;
 	} catch (exception e) {
 		cout << "Exception" << endl;
 		cout << e.what() << endl;
@@ -41,10 +42,11 @@ int main() {
 
 	cout << "Solve without J: " << endl;
 	try {
-		Matrix X = NewtonSolver::solve(system, X0);
+		DoubleData X = NewtonSolver::solve(system, X0);
 
 		cout << "Solution: " << endl;
-		cout << X << endl;
+		for (auto x : X) cout << x << " ";
+		cout << endl;
 	}
 	catch (exception e) {
 		cout << "Exception" << endl;

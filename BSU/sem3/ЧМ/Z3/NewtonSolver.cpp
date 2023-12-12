@@ -84,7 +84,7 @@ Matrix countJ(const FuncSystemType& system, const DoubleData& X, double M) {
 	return J;
 }
 
-Matrix NewtonSolver::solveWithJ(const FuncSystemType& system, const DoubleData& X0, const FuncMatrixType& Jm) {
+DoubleData NewtonSolver::solveWithJ(const FuncSystemType& system, const DoubleData& X0, const FuncMatrixType& Jm) {
 	int nIter = 1;
 	double delta1 = 0;
 	double delta2 = 0;
@@ -126,10 +126,10 @@ Matrix NewtonSolver::solveWithJ(const FuncSystemType& system, const DoubleData& 
 		nIter++;
 	} while (nIter <= nMaxIter && (delta1 > eps1 || delta2 > eps2));
 	
-	return funcArgsToMatrix(X);
+	return X;
 }
 
-Matrix NewtonSolver::solve(const FuncSystemType& system, const DoubleData& X0) {
+DoubleData NewtonSolver::solve(const FuncSystemType& system, const DoubleData& X0) {
 	int nIter = 1;
 	double delta1 = 0;
 	double delta2 = 0;
@@ -172,5 +172,5 @@ Matrix NewtonSolver::solve(const FuncSystemType& system, const DoubleData& X0) {
 		nIter++;
 	} while (nIter <= nMaxIter && (delta1 > eps1 || delta2 > eps2));
 
-	return funcArgsToMatrix(X);
+	return X;
 }
