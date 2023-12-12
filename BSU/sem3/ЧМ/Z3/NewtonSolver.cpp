@@ -8,68 +8,88 @@ double NewtonSolver::eps1 = 1e-6;
 double NewtonSolver::eps2 = 1e-6;
 double NewtonSolver::kM = 0.01;
 
-Matrix evalMatrix(NewtonSolver::FuncMatrixType mat, NewtonSolver::ArgType X) {
+Matrix evalMatrix(const FuncMatrixType& mat, const DoubleData& X) {
 	Matrix res(mat.size(), mat.size());
 
 	for (int i = 0; i < res.getNRows(); i++) {
 		for (int j = 0; j < res.getNCols(); j++) {
-			res.get(i, j) = mat[i][j](X);
+			res.get(i, j) = mat[i][j]->calc(X);
 		}
 	}
 
 	return res;
 }
 
-Matrix evalSystem(NewtonSolver::FuncSystemType system, NewtonSolver::ArgType X) {
-	Matrix res(system.size(), 1);
+Matrix funcArgsToMatrix(const DoubleData& x) {
+	Matrix res(x.size(), 1);
 
-	for (int i = 0; i < res.getNRows(); i++) {
-		res.get(i, 0) = system[i](X);
+	for (int i = 0; i < x.size(); ++i) {
+		res.get(i, 0) = x[i];
 	}
 
 	return res;
 }
 
-double countDelta(Matrix Xnext, Matrix Xprev) {
+DoubleData matrixToFuncArgs(const Matrix& mat) {
+	DoubleData res(mat.getNRows());
+
+	for (int i = 0; i < mat.getNRows(); ++i) {
+		res[i] = mat.get(i, 0);
+	}
+
+	return res;
+}
+
+DoubleData addFuncArgs(const DoubleData& a, const DoubleData& b) {
+	DoubleData res(a.size());
+
+	for (int i = 0; i < a.size(); ++i) {
+		res[i] = a[i] + b[i];
+	}
+
+	return res;
+}
+
+double countDelta(const DoubleData& Xnext, const DoubleData& Xprev) {
 	double res = 0;
 
-	for (int i = 0; i < Xnext.getNRows(); i++) {
-		if (abs(Xnext.get(i, 0)) < 1) {
-			res = max(res, abs(Xnext.get(i, 0) - Xprev.get(i, 0)));
+	for (int i = 0; i < Xnext.size(); i++) {
+		if (abs(Xnext[i]) < 1) {
+			res = max(res, abs(Xnext[i] - Xprev[i]));
 		} else {
-			res = max(res, abs((Xnext.get(i, 0) - Xprev.get(i, 0)) / Xnext.get(i, 0)));
+			res = max(res, abs((Xnext[i] - Xprev[i]) / Xnext[i]));
 		}
 	}
 
 	return res;
 }
 
-Matrix countJ(NewtonSolver::FuncSystemType system, NewtonSolver::ArgType X, double M) {
+Matrix countJ(const FuncSystemType& system, const DoubleData& X, double M) {
 	Matrix J(system.size(), system.size());
 
 	for (int j = 0; j < J.getNCols(); j++) {
-		double dx = M * X.get(j, 0);
+		double dx = M * X[j];
 
-		Matrix Xj = X;
-		Xj.get(j, 0) += dx;
+		DoubleData Xj = X;
+		Xj[j] += dx;
 
-		Matrix Ft = evalSystem(system, Xj);
-		Matrix F = evalSystem(system, X);
+		DoubleData Ft = IFunction::evalSystem(system, Xj);
+		DoubleData F = IFunction::evalSystem(system, X);
 
 		for (int i = 0; i < J.getNRows(); i++) {
-			J.get(i, j) = (Ft.get(i, 0) - F.get(i, 0)) / dx;
+			J.get(i, j) = (Ft[i] - F[i]) / dx;
 		}
 	}
 
 	return J;
 }
 
-Matrix NewtonSolver::solveWithJ(FuncSystemType system, ArgType X0, FuncMatrixType Jm) {
+Matrix NewtonSolver::solveWithJ(const FuncSystemType& system, const DoubleData& X0, const FuncMatrixType& Jm) {
 	int nIter = 1;
 	double delta1 = 0;
 	double delta2 = 0;
 
-	Matrix X = X0;
+	DoubleData X = X0;
 
 	if (kDebug) {
 		cout << "+------------+------------+------------+" << endl;
@@ -78,21 +98,21 @@ Matrix NewtonSolver::solveWithJ(FuncSystemType system, ArgType X0, FuncMatrixTyp
 	}
 
 	do {
-		Matrix F = evalSystem(system, X);
+		DoubleData F = IFunction::evalSystem(system, X);
 		Matrix J = evalMatrix(Jm, X);
 
-		Matrix dX;
+		DoubleData dX;
 
 		try {
-			dX = GaussSolver::solve(ExMatrix(J, -F));
+			dX = matrixToFuncArgs(GaussSolver::solve(ExMatrix(J, -funcArgsToMatrix(F))));
 		} catch(exception e) {
 			cout << "Caught exception: " << e.what() << endl;
 			throw;
 		}
 
-		Matrix Xnext = X + dX;
+		DoubleData Xnext = addFuncArgs(X, dX);
 
-		delta1 = F.norm();
+		delta1 = funcArgsToMatrix(F).norm();
 		delta2 = countDelta(Xnext, X);
 
 		X = Xnext;
@@ -106,15 +126,15 @@ Matrix NewtonSolver::solveWithJ(FuncSystemType system, ArgType X0, FuncMatrixTyp
 		nIter++;
 	} while (nIter <= nMaxIter && (delta1 > eps1 || delta2 > eps2));
 	
-	return X;
+	return funcArgsToMatrix(X);
 }
 
-Matrix NewtonSolver::solve(FuncSystemType system, ArgType X0) {
+Matrix NewtonSolver::solve(const FuncSystemType& system, const DoubleData& X0) {
 	int nIter = 1;
 	double delta1 = 0;
 	double delta2 = 0;
 
-	Matrix X = X0;
+	DoubleData X = X0;
 
 	if (kDebug) {
 		cout << "+------------+------------+------------+" << endl;
@@ -123,22 +143,22 @@ Matrix NewtonSolver::solve(FuncSystemType system, ArgType X0) {
 	}
 
 	do {
-		Matrix F = evalSystem(system, X);
+		DoubleData F = IFunction::evalSystem(system, X);
 		Matrix J = countJ(system, X, kM);
 
-		Matrix dX;
+		DoubleData dX;
 
 		try {
-			dX = GaussSolver::solve(ExMatrix(J, -F));
+			dX = matrixToFuncArgs(GaussSolver::solve(ExMatrix(J, -funcArgsToMatrix(F))));
 		}
 		catch (exception e) {
 			cout << "Caught exception: " << e.what() << endl;
 			throw;
 		}
 
-		Matrix Xnext = X + dX;
+		DoubleData Xnext = addFuncArgs(X, dX);
 
-		delta1 = F.norm();
+		delta1 = funcArgsToMatrix(F).norm();
 		delta2 = countDelta(Xnext, X);
 
 		X = Xnext;
@@ -152,5 +172,5 @@ Matrix NewtonSolver::solve(FuncSystemType system, ArgType X0) {
 		nIter++;
 	} while (nIter <= nMaxIter && (delta1 > eps1 || delta2 > eps2));
 
-	return X;
+	return funcArgsToMatrix(X);
 }

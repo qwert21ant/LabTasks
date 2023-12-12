@@ -4,25 +4,23 @@
 
 using namespace std;
 
-double func1(NewtonSolver::ArgType x) { return sin(x.get(0, 0) + 1) - x.get(1, 0) - 1; }
-double func2(NewtonSolver::ArgType x) { return 2 * x.get(0, 0) + cos(x.get(1, 0)) - 2; }
+double func1(const DoubleData& x) { return sin(x[0] + 1) - x[1] - 1; }
+double func2(const DoubleData& x) { return 2 * x[0] + cos(x[1]) - 2; }
 
-double J11(NewtonSolver::ArgType x) { return cos(x.get(0, 0) + 1); }
-double J12(NewtonSolver::ArgType x) { return -1; }
-double J21(NewtonSolver::ArgType x) { return 2; }
-double J22(NewtonSolver::ArgType x) { return -sin(x.get(1, 0)); }
+double J11(const DoubleData& x) { return cos(x[0] + 1); }
+double J12(const DoubleData& x) { return -1; }
+double J21(const DoubleData& x) { return 2; }
+double J22(const DoubleData& x) { return -sin(x[1]); }
 
 int main() {
-	NewtonSolver::FuncSystemType system = { func1, func2 };
+	FuncSystemType system = { new FunctionWrapper(func1), new FunctionWrapper(func2) };
 
-	NewtonSolver::FuncMatrixType J = {
-		{ J11, J12 },
-		{ J21, J22 },
+	FuncMatrixType J = {
+		{ new FunctionWrapper(J11), new FunctionWrapper(J12) },
+		{ new FunctionWrapper(J21), new FunctionWrapper(J22) },
 	};
 
-	Matrix X0(2, 1);
-	X0.get(0, 0) = 1;
-	X0.get(1, 0) = 1;
+	DoubleData X0 = { 1, 1 };
 
 
 	NewtonSolver::kM = 0.01;
