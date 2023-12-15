@@ -1,18 +1,25 @@
 ﻿#include <iostream>
 
-#include "Tasks.hpp"
+#include "TasksExplicit.hpp"
+#include "TasksImplicit.hpp"
 
 using namespace std;
 
-
 int main() {
-	TasksPerformer tasks;
+	cout << "Explicit method: " << endl;
 
-	while (tasks.hasMoreTasks()) {
-		tasks.performTask();
+	TasksExplicitPerformer tasksExplicit;
 
-		tasks.nextTask();
-	}
+	//while (tasksExplicit.hasMoreTasks()) {
+		tasksExplicit.performTask();
+
+	//	tasksExplicit.nextTask();
+	//}
+
+	cout << "Implicit method: " << endl;
+
+	TasksImplicitPerformer tasksImplicit(1, 2, 3);
+	tasksImplicit.performTask();
 
 	return 0;
 }

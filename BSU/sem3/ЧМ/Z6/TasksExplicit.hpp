@@ -8,7 +8,7 @@
 
 class Function1 : public IFunction {
 public:
-	double calc(const DoubleData& x) const {
+	double calc(const DoubleData& x) const override {
 		return -x[0] * x[1] + sin(x[2]) / x[2];
 	}
 };
@@ -17,7 +17,7 @@ class Function2 : public IFunction {
 	double a;
 
 public:
-	double calc(const DoubleData& x) const {
+	double calc(const DoubleData& x) const override {
 		return -x[1] * x[1] + a * x[2] / (1 + x[2] * x[2]);
 	}
 
@@ -26,7 +26,7 @@ public:
 	}
 };
 
-class TasksPerformer {
+class TasksExplicitPerformer {
 	int omegaMin = 25;
 	int omegaStep = 1;
 	int omegaMax = 48;
@@ -37,6 +37,8 @@ class TasksPerformer {
 
 	Function1 func1;
 	Function2 func2;
+
+	FunctionSystem sys{ 2 };
 
 	DoubleData u0 = { 0, -0.412 };
 
@@ -63,17 +65,20 @@ class TasksPerformer {
 	}
 
 public:
-	TasksPerformer() {
+	TasksExplicitPerformer() {
 		NewtonSolver::kDebug = false;
 
 		func2.setA(calcA());
+
+		sys.set(0, &func1);
+		sys.set(1, &func2);
 	}
 
 	void performTask() {
 		if (!moreTasks) return;
 
 		try {
-			vector<EulerSolver::Points> res = EulerSolver::explicitMethod(u0, { &func1, &func2 }, T, eps, tauMax);
+			vector<EulerSolver::Points> res = EulerSolver::explicitMethod(u0, &sys, T, eps, tauMax);
 
 			cout << "omega = " << omegaCur << ":" << endl;
 			printResult(res);

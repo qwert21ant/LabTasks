@@ -27,6 +27,8 @@ public:
 	Matrix& subtract(const Matrix&);
 	Matrix& multiply(const Matrix&);
 
+	Matrix& multiply(double);
+
 	double norm() const;
 
 	bool isSquare() const;
@@ -37,6 +39,8 @@ public:
 	friend Matrix operator +(Matrix, const Matrix&);
 	friend Matrix operator -(Matrix, const Matrix&);
 	friend Matrix operator *(Matrix, const Matrix&);
+
+	friend Matrix operator *(Matrix, double);
 
 	friend ostream& operator <<(ostream&, const Matrix&);
 

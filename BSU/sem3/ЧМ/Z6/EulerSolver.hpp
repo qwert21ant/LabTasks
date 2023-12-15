@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "../common/Function.hpp"
+#include "../common/FunctionSystem.hpp"
 
 using namespace std;
 
@@ -12,9 +12,9 @@ namespace EulerSolver {
 		vector<double> y;
 	};
 
-	vector<Points> explicitMethod(const DoubleData& u0, const FuncSystemType& f, double T, double eps, double tauMax);
+	vector<Points> explicitMethod(const DoubleData& u0, IFunctionSystem* sys, double T, double eps, double tauMax);
 
-	vector<Points> implicitMethod(const DoubleData& u0, const FuncSystemType& f, double T, double eps, double tauMin, double tauMax);
+	vector<Points> implicitMethod(const DoubleData& u0, IFunctionSystem* sys, double T, double eps, double tauMin, double tauMax);
 
 	class IncorrectInput : exception {};
 }

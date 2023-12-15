@@ -99,6 +99,16 @@ Matrix& Matrix::multiply(const Matrix& mat) {
 	return *this;
 }
 
+Matrix& Matrix::multiply(double k) {
+	for (size_t i = 0; i < n; i++) {
+		for (size_t j = 0; j < m; j++) {
+			data[i][j] *= k;
+		}
+	}
+
+	return *this;
+}
+
 double Matrix::norm() const {
 	double res = 0;
 
@@ -153,6 +163,12 @@ Matrix operator -(Matrix l, const Matrix& r) {
 
 Matrix operator *(Matrix l, const Matrix& r) {
 	l.multiply(r);
+
+	return l;
+}
+
+Matrix operator *(Matrix l, double k) {
+	l.multiply(k);
 
 	return l;
 }
