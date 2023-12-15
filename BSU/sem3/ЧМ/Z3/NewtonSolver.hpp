@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../common/Matrix.hpp"
-#include "../common/Function.hpp"
+#include "../common/FunctionSystem.hpp"
 
 class NewtonSolver {
 public:
@@ -11,9 +11,9 @@ public:
 	static double eps2;
 	static double kM;
 
-	static DoubleData solveWithJ(const FuncSystemType&, const DoubleData&, const FuncMatrixType&);
+	static DoubleData solveWithJ(IFunctionSystem*, const DoubleData&, const FuncMatrixType&);
 
-	static DoubleData solve(const FuncSystemType&, const DoubleData&);
+	static DoubleData solve(IFunctionSystem*, const DoubleData&);
 
 
 	class IterationsLimitExcedeed : exception {};

@@ -13,7 +13,7 @@ double J21(const DoubleData& x) { return 2; }
 double J22(const DoubleData& x) { return -sin(x[1]); }
 
 int main() {
-	FuncSystemType system = { new FunctionWrapper(func1), new FunctionWrapper(func2) };
+	IFunctionSystem* system = new FunctionSystem({ new FunctionWrapper(func1), new FunctionWrapper(func2) });
 
 	FuncMatrixType J = {
 		{ new FunctionWrapper(J11), new FunctionWrapper(J12) },
