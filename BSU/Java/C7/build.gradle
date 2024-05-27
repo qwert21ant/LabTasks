@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group = 'ru.qwert21.labs'
+version = '1.0-SNAPSHOT'
+
+tasks.register('run-client', JavaExec) {
+    dependsOn build
+
+    group = 'build'
+    description = 'Run client'
+
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = project.group + '.' + project.name + '.Client'
+}
+
+tasks.register('run-server', JavaExec) {
+    dependsOn build
+
+    group = 'build'
+    description = 'Run server'
+
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = project.group + '.' + project.name + '.Server'
+}
