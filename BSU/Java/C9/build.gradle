@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+apply from: "gradle/tomcat.gradle"
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    webapp 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    webapp 'jakarta.servlet.jsp:jakarta.servlet.jsp-api:3.0.0'
+    webapp 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
+    webapp 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
+}
