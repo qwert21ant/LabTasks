@@ -1,0 +1,93 @@
+def CATALINA_HOME = System.getenv("CATALINA_HOME")
+
+def CATALINA_CLASSPATH = ant.path {
+    fileset(dir: CATALINA_HOME + "/lib", includes: "*.jar")
+    fileset(dir: CATALINA_HOME + "/bin", includes: "*.jar")
+}
+
+ant.taskdef(
+    resource: "org/apache/catalina/ant/catalina.tasks",
+    classpath: CATALINA_CLASSPATH,
+)
+
+def MANAGER_URL = "http://localhost:8080/manager/text"
+def MANAGER_USERNAME = "admin"
+def MANAGER_PASSWORD = "admin"
+
+def TOMCAT_SERVICE_NAME = "Tomcat10"
+
+def BUILD_APP_PATH = "build/app"
+
+tasks.named("compileJava") {
+    destinationDir file("${BUILD_APP_PATH}/WEB-INF/classes")
+}
+
+tasks.named("processResources") {
+    from(files("src/main/webapp"))
+}
+
+sourceSets {
+    main {
+        output.resourcesDir = BUILD_APP_PATH
+    }
+}
+
+tasks.register("start", Exec) {
+    group "tomcat service"
+
+    commandLine "powershell", "-Command", "start-service", TOMCAT_SERVICE_NAME
+}
+
+tasks.register("stop", Exec) {
+    group "tomcat service"
+
+    commandLine "powershell", "-Command", "stop-service", TOMCAT_SERVICE_NAME
+}
+
+tasks.register("deploy") {
+    dependsOn "classes"
+    group "tomcat"
+
+    mustRunAfter "remove" // for restart task
+
+    doLast {
+        ant.deploy(
+            url: MANAGER_URL,
+            username: MANAGER_USERNAME,
+            password: MANAGER_PASSWORD,
+            path: "/${project.name}",
+            localWar: "file://${file(BUILD_APP_PATH)}"
+        )
+    }
+}
+
+tasks.register("remove") {
+    group "tomcat"
+
+    doLast {
+        ant.undeploy(
+            url: MANAGER_URL,
+            username: MANAGER_USERNAME,
+            password: MANAGER_PASSWORD,
+            path: "/${project.name}"
+        )
+    }
+}
+
+tasks.register("reload") {
+    group "tomcat"
+
+    doLast {
+        ant.reload(
+            url: MANAGER_URL,
+            username: MANAGER_USERNAME,
+            password: MANAGER_PASSWORD,
+            path: "/${project.name}"
+        )
+    }
+}
+
+tasks.register("redeploy") {
+    dependsOn "deploy", "remove"
+    group "tomcat"
+}

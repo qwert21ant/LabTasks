@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чат</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        .iframe-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        iframe {
+            border: none;
+        }
+        .border {
+            height: 2px;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+<div class="iframe-container">
+    <iframe style="height: 80%" src="messages"></iframe>
+    <div class="border"></div>
+    <iframe class="height: 20%" src="compose_message.html"></iframe>
+</div>
+</body>
+</html>

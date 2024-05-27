@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <form id="msgForm">
+        Текст сообщения:
+        <input type="text" name="message" style="width: 50%">
+        <input type="submit" value="Отправить">
+        <a href="logout" target="_top">Выйти из чата</a>
+    </form>
+    <div id="result"></div>
+    <script>
+        document.getElementById('msgForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // предотвращение редиректа
+
+            console.log(document.getElementById('result'));
+            document.getElementById('result').innerHTML = '';
+
+            let formData = new FormData(this);
+            let urlEncodedData = new URLSearchParams(formData).toString();
+
+            fetch('send_message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: urlEncodedData
+            })
+            .then(async resp => {
+                console.log(resp);
+                if (resp.status != 200) {
+                    document.getElementById('result').innerHTML = '<p style="color: red;">' + (await resp.text()) + '</p>';
+                } else {
+                    document.getElementById('msgForm').reset();
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                document.getElementById('result').innerHTML = '<p style="color: red;">Произошла ошибка при отправке сообщения.</p>';
+            });
+        });
+    </script>
+</body>
+</html>
