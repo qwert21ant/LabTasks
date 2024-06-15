@@ -1,0 +1,30 @@
+plugins {
+  id 'java'
+  id 'war'
+}
+
+group 'com.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+  mavenCentral()
+}
+
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+tasks.withType(JavaCompile) {
+  options.encoding = 'UTF-8'
+}
+
+dependencies {
+  compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+
+  implementation 'com.google.code.gson:gson:2.10.1'
+  implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
+  implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
+}
+
+war {
+  archiveFileName = 'simple-jsp.war'
+}
